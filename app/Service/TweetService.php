@@ -3,11 +3,12 @@
 namespace App\Service;
 
 use \GuzzleHttp\Client as HttpClient;
+use Illuminate\Support\Collection;
 
 class TweetService
 {
     /**
-     * @const $baseUrlApi
+     * @const $TWEETNUMBER
      */
     public const TWEETNUMBER = 45;
 
@@ -33,7 +34,7 @@ class TweetService
     }
 
     /**
-     * Get token GLPI
+     * Get token
      * @access public
      * @return object
      */
@@ -63,27 +64,35 @@ class TweetService
     }
 
     /**
-     * Get Sliced Random Tweet
+     * Get sliced random tweet
      * @access public
-     * @param array $data
      * @return object
      */
-    public function getSlicedRandomTweet(object $data): array
+    public function getSlicedRandomTweet(): object
     {
-        $rand = rand(0, (count($data) - 1));
-        $tweet = $data[$rand];
-        $tweets = [];
+        $data = collect($this->getTweet($this->getToken()->token))->pluck('text');
 
+        $tweet = $this->getRandValueFromArray($data->toArray());
         $words = $this->getWordsFromString($tweet);
+
         $finalData = $this->makeTweetsFromArrayWords($words);
 
-        dd($finalData);
-
-        return $finalData;
+        return (object)$finalData;
     }
 
     /**
-     * Make Tweets From an Array Words
+     * Get rand value from array
+     * @access public
+     * @param array $data
+     * @return string
+     */
+    public function getRandValueFromArray(array $data): string
+    {
+        return $data[array_rand($data)];
+    }
+
+    /**
+     * Make tweets from an array words
      * @access public
      * @param array $words
      * @return array
@@ -98,7 +107,7 @@ class TweetService
         foreach ($words as $key => $word) {
             $nextString     = array_merge($tweetWords, [$word]);
             $validateLength = mb_strlen(implode(' ', $nextString), 'utf8');
-            
+
             if($validateLength >= self::TWEETNUMBER) {
                 $validateLength = 0;
                 $dataReturn[]   = $this->buildTweet($tweetWords, $tweetNumber);
@@ -115,13 +124,20 @@ class TweetService
         return $dataReturn;
     }
 
+    /**
+     * Build tweet
+     * @access public
+     * @param array $array
+     * @param int $number
+     * @return string
+     */
     public function buildTweet(array $array, int $number): string
     {
         return "Tweet #$number: " . implode(' ', $array);
     }
 
     /**
-     * Get Words From String
+     * Get words from string
      * @access public
      * @param string $string
      * @return array
@@ -136,24 +152,6 @@ class TweetService
         }
 
         return $arrayWords;
-    }
-
-
-    /**
-     * Get Count From Words
-     * @access public
-     * @param string $string
-     * @return array
-     */
-    public function getCountFromWords(array $words): array
-    {
-        $wordsWithCount = [];
-        foreach ($words as $key => $value) {
-            $wordsWithCount[$key]['len'] = mb_strlen($value, 'utf8');
-            $wordsWithCount[$key]['word'] = $value;
-        }
-
-        return $wordsWithCount;
     }
 
     /**
