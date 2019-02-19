@@ -25,9 +25,7 @@ class TweetController extends Controller
 
     public function tweet()
     {
-    	$token = $this->tweetService->getToken();
-    	$dataJson = collect($this->tweetService->getTweet($token->token))->pluck('text');
-        $getTweets = $this->tweetService->getSlicedRandomTweet($dataJson);
+        $getTweets = $this->tweetService->getSlicedRandomTweet();
         return response()->json($getTweets);
     }
 }
