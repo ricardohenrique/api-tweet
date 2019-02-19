@@ -13,4 +13,4 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('tweet', 'TweetController@tweet');
+Route::get('tweet', 'TweetController@tweet');
