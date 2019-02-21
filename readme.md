@@ -3,7 +3,7 @@
 API to make tweets
 ### Installation
 
-This API requires [PHP](http://www.php.net/) v7.0+ to run.
+This API requires [Docker](https://www.docker.com/).
 
 Clone the project:
 ```sh
@@ -15,20 +15,18 @@ Go to folder:
 $ cd api-tweet
 ```
 
-Install the dependencies:
+Execute image:
 ```sh
-$ composer install
+$ docker build -t zuldigital/engineer-exam .
 ```
 
-Create your .env:
+Run server:
 ```sh
-$ cp .env.example .env
+$ docker run -p 8484:8484 —rm zuldigital/engineer-exam
 ```
 
-Create your app key:
-```sh
-$ php artisan key:generate
-```
+Access the url http://0.0.0.0:8484/api/tweet
+
 
 ### API Resources
 
