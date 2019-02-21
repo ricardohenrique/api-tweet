@@ -40,24 +40,13 @@ $ php artisan key:generate
 
 ### GET /api/tweet
 
-Example: /api/products
+Example: /api/tweet
 
 Request body Response Success:
 Status Code: 200
 
-     [
-        {
-            "lm": 9001,
-            "name": "Teste name 01",
-            "free_shipping": 0,
-            "description": "Teste Description 01",
-            "price": 100
-        },
-        {
-            "lm": 9002,
-            "name": "Teste name 02",
-            "free_shipping": 1,
-            "description": "Teste Description 02",
-            "price": 200
-        }
-    ]
+    {
+        "0": "Tweet #1: @correfrotinha, Olá, sua informação foi",
+        "1": "Tweet #2: registrada para providências. Agradecemos o",
+        "2": "Tweet #3: contato."
+    }
